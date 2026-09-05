@@ -139,6 +139,7 @@ export function buildEnvelopeScene(stage) {
 
   /* ═══ the letter ═══ */
   const letter = new THREE.Group();
+  letter.name = 'theLetter';
   const LW = W * 0.92, LH = H * 0.88;
 
   const letterMat = new THREE.MeshStandardMaterial({
@@ -211,9 +212,9 @@ export function buildEnvelopeScene(stage) {
     ctx.stroke();
   }
   ctx.fillStyle = '#a94e63';
-  ctx.font = 'italic 44px "Cormorant Garamond", Georgia, serif';
+  ctx.font = 'italic 40px "Cormorant Garamond", Georgia, serif';
   ctx.textAlign = 'center';
-  ctx.fillText('Dear Teachers,', 256, 96);
+  ctx.fillText('Dear Teachers & Professors,', 256, 96);
   ctx.fillStyle = '#7a5c44';
   ctx.font = 'italic 30px "Cormorant Garamond", Georgia, serif';
   ctx.fillText('with love…', 256, 150);
@@ -244,8 +245,8 @@ export function buildEnvelopeScene(stage) {
         ctx.stroke();
       }
       ctx.fillStyle = '#a94e63';
-      ctx.font = 'italic 44px "Cormorant Garamond", Georgia, serif';
-      ctx.fillText('Dear Teachers,', 256, 96);
+      ctx.font = 'italic 40px "Cormorant Garamond", Georgia, serif';
+      ctx.fillText('Dear Teachers & Professors,', 256, 96);
       ctx.fillStyle = '#7a5c44';
       ctx.font = 'italic 30px "Cormorant Garamond", Georgia, serif';
       ctx.fillText('with love…', 256, 150);
@@ -257,6 +258,71 @@ export function buildEnvelopeScene(stage) {
   letter.scale.set(0.98, 0.98, 1);
   letterTop.rotation.x = -Math.PI; // start folded down (fits inside envelope)
   envelope.add(letter);
+
+  /* ═══ richer 3D letter styling ═══
+     - gilded frame around the letter front
+     - a small rose wax seal on the letter's corner
+     - soft halo glow behind the letter
+     - floating shadow beneath the envelope
+     - presentation rotation handled in the open phases */
+  // gilded frame: thin gold border planes on the letter front
+  const goldMat = new THREE.MeshStandardMaterial({
+    color: 0xd4a24c, emissive: 0xd4a24c, emissiveIntensity: 0.35,
+    roughness: 0.35, metalness: 0.75,
+  });
+  const frameT = 0.03;
+  const mkFrameBar = (w, h, x, y) => {
+    const bar = new THREE.Mesh(new THREE.PlaneGeometry(w, h), goldMat);
+    bar.position.set(x, y, 0.006);
+    letterFront.add(bar);
+    return bar;
+  };
+  mkFrameBar(LW - 0.06, frameT, 0, LH / 4 - frameT / 2 - 0.02);        // top
+  mkFrameBar(LW - 0.06, frameT, 0, -LH / 4 + frameT / 2 + 0.02);       // bottom
+  mkFrameBar(frameT, LH / 2 - 0.06, -LW / 2 + frameT / 2 + 0.02, -LH / 4); // left
+  mkFrameBar(frameT, LH / 2 - 0.06, LW / 2 - frameT / 2 - 0.02, -LH / 4);  // right
+
+  // letter's own wax seal (bottom-right corner)
+  const letterSeal = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.09, 0.10, 0.035, 20),
+    new THREE.MeshStandardMaterial({
+      color: 0xc95f77, roughness: 0.35, metalness: 0.15,
+      emissive: 0xc95f77, emissiveIntensity: 0.3,
+    })
+  );
+  letterSeal.rotation.x = Math.PI / 2;
+  letterSeal.position.set(LW / 2 - 0.22, -LH / 4 + 0.2, 0.008);
+  letterFront.add(letterSeal);
+
+  // halo glow behind the letter (additive sprite-like plane)
+  const haloMat = new THREE.MeshBasicMaterial({
+    color: 0xffdf9e, transparent: true, opacity: 0,
+    blending: THREE.AdditiveBlending, depthWrite: false,
+  });
+  const halo = new THREE.Mesh(new THREE.PlaneGeometry(LW * 2.2, LH * 2.2), haloMat);
+  halo.position.z = -0.12;
+  letter.add(halo);
+
+  // soft shadow beneath the envelope (dark radial plane on floor)
+  const shadowTex = (() => {
+    const c = document.createElement('canvas');
+    c.width = c.height = 128;
+    const g = c.getContext('2d');
+    const grad = g.createRadialGradient(64, 64, 8, 64, 64, 64);
+    grad.addColorStop(0, 'rgba(0,0,0,0.55)');
+    grad.addColorStop(1, 'rgba(0,0,0,0)');
+    g.fillStyle = grad;
+    g.fillRect(0, 0, 128, 128);
+    const t = new THREE.CanvasTexture(c);
+    return t;
+  })();
+  const envelopeShadow = new THREE.Mesh(
+    new THREE.PlaneGeometry(W * 2.4, W * 2.4),
+    new THREE.MeshBasicMaterial({ map: shadowTex, transparent: true, opacity: 0.6, depthWrite: false })
+  );
+  envelopeShadow.rotation.x = -Math.PI / 2;
+  envelopeShadow.position.set(0, -2.6, -0.4);
+  scene.add(envelopeShadow);
 
   /* ═══ ambient petals + motes ═══ */
   const petalField = makePetalField(40, 8);
@@ -363,14 +429,22 @@ export function buildEnvelopeScene(stage) {
     }
   }
   function risePhase(p) {
-    letter.position.y = p * (H * 0.75);
-    letter.position.z = p * 0.1;
+    const eased = p * p * (3 - 2 * p); // smoothstep
+    letter.position.y = eased * (H * 0.75);
+    letter.position.z = eased * 0.1;
+    // presentation rotation: letter turns a half waltz as it rises
+    letter.rotation.y = eased * Math.PI * 2;      // full turn to show front again
+    letter.rotation.z = Math.sin(eased * Math.PI) * 0.25; // gentle tilt during the turn
+    // halo fades in as the letter emerges
+    haloMat.opacity = eased * 0.22;
     camera.position.z = camHome.z + p * 0.6;
   }
   function unfoldPhase(p) {
     const eased = 1 - Math.pow(1 - p, 3); // easeOutCubic
     letterTop.rotation.x = -(1 - eased) * Math.PI; // -π (folded) → 0 (open)
     letter.position.y = H * 0.75 + p * 0.5;
+    letter.rotation.z = (1 - eased) * 0.25; // settle the tilt to level
+    haloMat.opacity = 0.22 + eased * 0.1;
     camera.position.z = camHome.z + 0.6 - p * 1.5;
     camera.position.y = camHome.y + p * 0.4;
   }
@@ -412,6 +486,14 @@ export function buildEnvelopeScene(stage) {
       if (opened) {
         const focus = THREE.MathUtils.clamp((openT - 1.1) / 1.5, 0, 1);
         camera.lookAt(0, 0.4 * focus, 0);
+      }
+
+      // after the open sequence: perpetual gentle presentation sway of the letter
+      if (opened && openT >= 3.4) {
+        letter.rotation.y = Math.sin(t * 0.45) * 0.28;
+        letter.rotation.z = Math.sin(t * 0.3) * 0.05;
+        letter.position.y = H * 0.75 + 0.5 + Math.sin(t * 0.9) * 0.05;
+        haloMat.opacity = 0.3 + Math.sin(t * 1.4) * 0.08; // breathing halo
       }
 
       updatePetalField(petalField, dt, t);
@@ -467,7 +549,9 @@ export function buildEnvelopeScene(stage) {
       seal.rotation.z = 0;
       flapGroup.rotation.x = 0;
       letter.position.set(0, 0, 0);
+      letter.rotation.set(0, 0, 0);
       letterTop.rotation.x = -Math.PI;
+      haloMat.opacity = 0;
       camera.position.copy(camHome);
       camera.lookAt(0, 0, 0);
       return false; // envelopeOpened state

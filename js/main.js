@@ -28,15 +28,59 @@ const state = {
   audio: new AudioBus('assets/audio/song.m4a'),
 };
 
-/* ── progress: assets we truly load ── */
-const REAL_STEPS = ['three.js', 'audio', 'fonts', 'scene'];
-let realDone = 0;
-function bumpProgress(label) {
-  realDone++;
-  const pct = Math.min(100, Math.round((realDone / REAL_STEPS.length) * 100));
+/* ── progress: a narrated, staged loading sequence ──
+   Each real asset maps to a stage label; the bar advances
+   only when the thing is genuinely ready, and each stage
+   holds for at least MIN_STAGE_MS so the narration reads
+   as a sequence rather than a flash. */
+const STAGES = [
+  { key: 'three.js', label: 'summoning the three dimensions…' },
+  { key: 'scene',    label: 'folding the envelope…' },
+  { key: 'fonts',    label: 'mixing the ink and choosing the letters…' },
+  { key: 'audio',   label: 'tuning the strings for the song…' },
+];
+const MIN_STAGE_MS = 650;   // narration beat
+const doneSet = new Set();
+const labelEl = $('#progressLabel');
+const stageQueue = [];      // labels waiting for their beat
+let beatBusy = false;
+
+function playBeat() {
+  if (beatBusy) return;
+  beatBusy = true;
+  const next = () => {
+    if (stageQueue.length === 0) { beatBusy = false; checkAllDone(); return; }
+    const { key, label } = stageQueue.shift();
+    labelEl.style.opacity = '0';
+    setTimeout(() => {
+      labelEl.textContent = label;
+      labelEl.style.opacity = '1';
+      setTimeout(next, MIN_STAGE_MS);
+    }, 200);
+  };
+  next();
+}
+
+function checkAllDone() {
+  if (doneSet.size >= STAGES.length) {
+    labelEl.style.opacity = '0';
+    setTimeout(() => {
+      labelEl.textContent = 'everything is ready for you.';
+      labelEl.style.opacity = '1';
+      revealOpenBtn();
+    }, 300);
+  }
+}
+
+function bumpProgress(key) {
+  if (doneSet.has(key)) return;
+  doneSet.add(key);
+  const pct = Math.min(100, Math.round((doneSet.size / STAGES.length) * 100));
   els.progressFill.style.width = pct + '%';
   els.progressPct.textContent = pct + '%';
-  if (pct >= 100) revealOpenBtn();
+  const stage = STAGES.find(s => s.key === key);
+  if (stage) stageQueue.push(stage);
+  playBeat();
 }
 function revealOpenBtn() {
   if (state.entered) return;
@@ -73,7 +117,7 @@ personalize((data) => {
   if (data && data.city) {
     const hour = new Date().getHours();
     const part = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
-    els.greetingSlot.textContent = part + ' from ' + data.city + ', ' + data.country + ' — dear Teachers,';
+    els.greetingSlot.textContent = part + ' from ' + data.city + ', ' + data.country + ', dear Teachers and Professors,';
     const geoLine = $('#geoLine');
     const geoEmoji = $('#geoEmoji');
     if (geoLine && geoEmoji) {
@@ -81,7 +125,7 @@ personalize((data) => {
       geoLine.innerHTML =
         'This wish traveled through the internet to reach <strong>' +
         data.city + (data.region ? ', ' + data.region : '') +
-        '</strong> — ' + data.country +
+        '</strong>, ' + data.country +
         ' <span style="opacity:.65">(' + data.ip + ')</span>. ' +
         'Wherever you are, my teachers\u2019 lessons travel with me.';
     }
@@ -100,14 +144,15 @@ els.openBtn.addEventListener('click', () => {
   envelopeScene.enter();
 });
 
-/* envelope opened -> show letter overlay after the 3D unfold completes (~3.4s) */
+/* envelope opened -> let the 3D letter present itself (rotation, halo),
+   then show the readable letter overlay */
 envelopeScene.onOpen(() => {
   if (state.envelopeOpened) return;
   state.envelopeOpened = true;
   els.hint.classList.add('gone');
   setTimeout(() => {
     els.letterOverlay.classList.remove('hidden');
-  }, 3300);
+  }, 5300);
 });
 
 /* replay */

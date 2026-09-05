@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#101426">
-  <title>Teacher's Day Wishes 💌 — A Letter for My Teachers</title>
-  <meta name="description" content="An animated 3D letter of gratitude for my teachers — flowers, petals, a song, and a letter that unfolds. Open the envelope.">
-  <meta property="og:title" content="Teacher's Day Wishes — A Letter for My Teachers">
-  <meta property="og:description" content="Open the envelope. A 3D letter of gratitude, with flowers, petals and a song — for the teachers who taught me to think, write, code and dream.">
+  <title>Teacher's Day Wishes 💌 A Letter for My Teachers</title>
+  <meta name="description" content="An animated 3D letter of gratitude for my teachers: flowers, petals, a song, and a letter that unfolds. Open the envelope.">
+  <meta property="og:title" content="Teacher's Day Wishes, A Letter for My Teachers">
+  <meta property="og:description" content="Open the envelope. A 3D letter of gratitude, with flowers, petals and a song, for the teachers who taught me to think, write, code and dream.">
   <meta property="og:type" content="website">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E💌%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,8 +27,9 @@
       <p class="loader-sub">Blossoming something special for you<span class="ellipsis"><span>.</span><span>.</span><span>.</span></span></p>
       <div class="progress" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
       <p class="progress-pct" id="progressPct">0%</p>
+      <p class="progress-label" id="progressLabel">gathering petals…</p>
       <button id="openBtn" class="btn-gold hidden" type="button">💌 &nbsp;Open Your Letter</button>
-      <p class="credit">♪ “Teacher” — TOMONARI SORA</p>
+      <p class="credit">♪ “Teacher” by TOMONARI SORA</p>
     </div>
   </div>
 
@@ -41,34 +42,36 @@
   <div id="sceneUi" class="overlay ui-layer hidden">
     <p id="hint" class="hint">✨ click the envelope to open your letter ✨</p>
     <button id="kbOpenBtn" class="kb-open hidden" type="button">(or press Enter to open)</button>
-    <p class="credit bottom">♪ “Teacher” — TOMONARI SORA &nbsp;·&nbsp; theme from <em>Assassination Classroom: The Movie</em></p>
+    <p class="credit bottom">♪ “Teacher” by TOMONARI SORA &nbsp;·&nbsp; theme from <em>Assassination Classroom: The Movie</em></p>
   </div>
 
   <!-- ═══════════ LETTER OVERLAY (the message) ═══════════ -->
-  <div id="letterOverlay" class="overlay letter-overlay hidden" role="dialog" aria-label="A letter to my teachers">
+  <div id="letterOverlay" class="overlay letter-overlay hidden" role="dialog" aria-label="A letter to my teachers and professors">
     <article class="letter-paper">
       <div class="letter-scroll">
-        <p class="letter-greeting" id="greetingSlot">Dear Teachers,</p>
+        <p class="letter-greeting" id="greetingSlot">Dear Teachers and Professors,</p>
         <h2 class="letter-heading script-title">Happy Teacher's Day 🌸</h2>
 
-        <p>Some lessons are taught in classrooms. Yours are the ones that stayed — in how I think, how I write, how I see the world.</p>
+        <p>There are lessons which the schoolroom teaches, and lessons which the lecture hall and the laboratory teach in their turn; and I have been fortunate, beyond the common allotment of fortune, to have received instruction in all three chambers; for the teachers of my school days laid the first stones with patient and cheerful hands, and the professors of IISER Kolkata, taking up the work where the schoolmasters gently set it down, carried the building higher, into the very regions of inquiry and of thought, where the young mind learns not merely to answer, but to ask.</p>
 
-        <p><strong>Thank you for always being there.</strong> Not just behind the desk, but beside me — on the days I understood everything, and on the days I understood nothing at all.</p>
+        <p>I thank you, my school teachers, first and without reserve, for the constancy of your presence; for the mornings you arrived before us and the evenings you remained behind, as though the schoolroom were a small lighthouse upon a darkening coast, and you its patient keeper, trimming the wick that we might find our way; and in that quiet and unremarked devotion I found the very model of what it is to be dependable in an age that has half forgotten the word.</p>
 
-        <p><strong>Thank you for trusting me.</strong> For handing me responsibilities a little heavier than I thought I could carry, and then watching, patiently, as I discovered that I could.</p>
+        <p>And I thank you, my professors at IISER Kolkata, for receiving that same pupil when he came to you older, and for treating him not as a vessel to be filled but as a colleague in the making; for the seminars wherein you suffered our questions gladly, and the laboratories wherein you let us fail and fail again until the failure itself became instruction, and the open doors and unhurried conversations by which you showed that the pursuit of science is not a race but a devotion, pursued best in company.</p>
 
-        <p>You were never only a teacher of subjects. You were the one I could talk to — about doubts in my studies, about equations and chapters, yes, but also about life: about fear, about failure, about growing up. You made it safe to be a work in progress.</p>
+        <p>I thank you all for your trust, which you extended to me more generously than my timid years deserved; you set upon my shoulders tasks a little heavier than I believed I could carry, whether those tasks were a school project trembling in the hand of a boy, or a research problem set humming in the mind of a young scholar, and then you waited, with that calm assurance which the wise possess and the anxious so sorely lack, and in the waiting you taught me that confidence is not a gift bestowed but a harvest earned, and that the field, however stony, will answer at last to patient ploughing.</p>
 
-        <p><strong>And thank you for constantly inspiring me.</strong> Every time I felt like stopping, I remembered something you said — and kept going.</p>
+        <p>Nor were your lessons confined to the narrow province of studies; you opened instead the wider province of life itself, and bade me speak of doubt as freely as of algebra, of sorrow as plainly as of science; the schoolroom became a harbour for a boy drifting upon the uncertain waters of growing up, and the corridors and offices of IISER Kolkata became a harbour in their turn for the young man who still, on occasion, drifts; and in both harbours I was heard, and not judged, and rose again with lighter ballast for having spoken.</p>
 
-        <p>Here is the part you should be proudest of: <em>the wish you are reading right now</em> — a 3D world, an envelope that opens, a song that plays, code that I wrote myself — exists <em>because of you</em>. You taught me to write. To think. To analyze. To build. The fact that I can send my gratitude to you through a website of my own making is your lesson, still living in me.</p>
+        <p>And I thank you, most of all perhaps, for the inspiration you dealt so freely and so often that it seemed no treasure at all until I found myself abroad in the world, rich in resolve, and traced the riches back to you; for every time the spirit faltered, whether before a school examination or a research presentation, some remembered sentence of yours rose up like a small lantern in a long gallery, and I went on, and went on gladly.</p>
 
-        <p>If a student you taught can do this, imagine how far your teaching will travel with everyone else you believed in.</p>
+        <p>Now observe, I pray you, this small wonder: that the very letter you are reading, unfolding itself in three dimensions before your eyes, wreathed in flowers of light and set to music, was written in code by the hand of your own pupil, and by the hand of your own student; and that the hand was taught, and the mind was formed, and the courage was kindled, first within the schoolroom walls and afterwards within the halls and laboratories of IISER Kolkata; so that this website, with its turning pages and its singing flowers, is not merely a greeting but a certificate of your own handiwork, a testimonial written in the very skills you gave me, saying: you taught a child to write, to think, to question, to build; and behold what the child, and the undergraduate, have built for you.</p>
+
+        <p>If one pupil, thus equipped by school and institute alike, can send his gratitude across the internet to find you wherever you dwell, then consider how far your teaching must travel, borne invisibly in a thousand minds you will never meet, a blessing going forth perpetually, as ripples go forth from a stone cast kindly into still water.</p>
 
         <p class="letter-signoff script-title">With love and endless gratitude,</p>
-        <p class="letter-signature script-title">— Shuvam</p>
+        <p class="letter-signature script-title">Shuvam</p>
 
-        <p class="letter-ps"><em>P.S. — this entire website was written, animated and deployed by your student. Every petal is code. Every line is a thank-you.</em></p>
+        <p class="letter-ps"><em>P.S. this entire website was written, animated and deployed by your student. Every petal is code. Every line is a thank-you.</em></p>
 
         <div class="geo-card" id="geoCard">
           <span class="geo-emoji" id="geoEmoji">🌍</span>
@@ -85,8 +88,8 @@
   <noscript>
     <div class="overlay noscript-card">
       <div class="loader-inner">
-        <h1 class="script-title">For My Teachers</h1>
-        <p>Happy Teacher's Day! This 3D experience needs JavaScript — but the wish itself needs nothing: thank you for everything, always. 🌸</p>
+        <h1 class="script-title">For My Teachers and Professors</h1>
+        <p>Happy Teacher's Day! This 3D experience needs JavaScript, but the wish itself needs nothing: thank you, school teachers and IISER Kolkata professors alike, for everything, always. 🌸</p>
       </div>
     </div>
   </noscript>
