@@ -115,9 +115,17 @@ bumpProgress('three.js');
 /* geo personalization (async, non-blocking) */
 personalize((data) => {
   if (data && data.city) {
+    /* The city here is the READER's, not mine, so the salutation has to
+       address them where they are rather than claim to be sent from there. */
     const hour = new Date().getHours();
-    const part = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
-    els.greetingSlot.textContent = part + ' from ' + data.city + ', ' + data.country + ', dear Teachers and Professors,';
+    const when = hour < 5  ? 'this small hour'
+               : hour < 12 ? 'this morning'
+               : hour < 17 ? 'this afternoon'
+               : hour < 21 ? 'this evening'
+               : 'this night';
+    const place = data.city + (data.country ? ', ' + data.country : '');
+    els.greetingSlot.textContent =
+      'To my dear Teachers and Professors, whom ' + when + ' finds in ' + place + ',';
     const geoLine = $('#geoLine');
     const geoEmoji = $('#geoEmoji');
     if (geoLine && geoEmoji) {
@@ -150,9 +158,13 @@ envelopeScene.onOpen(() => {
   if (state.envelopeOpened) return;
   state.envelopeOpened = true;
   els.hint.classList.add('gone');
-  setTimeout(() => {
-    els.letterOverlay.classList.remove('hidden');
-  }, 5300);
+});
+
+/* the 3D letter finishes presenting itself -> hand over to the readable
+   overlay. Driven by the animation's own clock rather than a timer, so a
+   slow device never has the overlay cover the sequence half-played. */
+envelopeScene.onSequenceComplete(() => {
+  els.letterOverlay.classList.remove('hidden');
 });
 
 /* replay */

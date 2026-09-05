@@ -10,9 +10,9 @@ A 3D animated Teacher's Day letter — an envelope that opens, a song that plays
 
 1. **Loading** — a 3D garden blooms behind the progress bar: procedural flowers opening petal by petal, glowing ribbon spirals, drifting light motes.
 2. **The Envelope** — a hand-built 3D envelope floats in a dark, elegant space, sealed with a glowing rose wax seal. Click it.
-3. **The Opening** — the seal cracks and falls away, the flap swings open, the letter slides out and unfolds in 3D.
-4. **The Letter** — a parchment letter with the full message: thank you for always being there, for trusting me, for being someone to talk to about studies *and* life, for constantly inspiring — and the meta-truth that this entire website exists because my teachers taught me to write, think, code, and analyze.
-5. **Personalized** — the site detects your city and country from your IP and weaves it into the greeting.
+3. **The Opening** — a single 6.2-second choreography: the wax seal wakes and shatters into tumbling wedges, the flap swings back to show the dark interior, the letter rises clear of the mouth on a burst of petals, its folded top half unfolds, the spent envelope bows out of frame, and the letter turns a full waltz to present itself before settling into a perpetual drift.
+4. **The Letter** — *To Those Who Taught Me, and Those Who Walked Beside Me*: a letter to the teachers of New Horizon High School, Jodhpur Park Boys' School and IISER Kolkata, who began as teachers and became elder brothers and sisters.
+5. **Personalized** — the site detects your city and country from your IP and addresses you where you are.
 6. **The Song** — *"Teacher"* by TOMONARI SORA (theme of *Assassination Classroom: The Movie*) plays softly in the background. 🔊
 
 ## Built With
@@ -41,7 +41,7 @@ js/
   main.js           — orchestrator (state machine, progress, personalization)
   stage.js          — shared WebGL renderer + render loop
   loading-scene.js  — 3D blooming flowers + ribbons + motes
-  envelope-scene.js  — 3D envelope, flap, wax seal, unfolding letter
+  envelope-scene.js — 3D envelope, shattering seal, unfolding letter, open choreography
   flowers.js        — procedural flower geometry
   petals.js         — falling petal particle field
   audio.js          — song playback (gesture-unlocked, looped, mutable)
