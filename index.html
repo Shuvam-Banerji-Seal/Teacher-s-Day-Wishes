@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Teacher's Day Wishes 💌 — A Letter for My Teachers</title>
+  <meta name="description" content="An animated 3D letter of gratitude for my teachers — flowers, petals, a song, and a letter that unfolds. Open the envelope.">
+  <meta property="og:title" content="Teacher's Day Wishes — A Letter for My Teachers">
+  <meta property="og:description" content="Open the envelope. A 3D letter of gratitude, with flowers, petals and a song — for the teachers who taught me to think, write, code and dream.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E💌%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- 3D stage -->
+  <canvas id="stage" aria-label="3D animated scene: an envelope with a letter for my teachers"></canvas>
+
+  <!-- ═══════════ LOADING OVERLAY ═══════════ -->
+  <div id="loader" class="overlay" role="status" aria-live="polite">
+    <div class="loader-inner">
+      <p class="loader-eyebrow">September 5 · Teacher's Day</p>
+      <h1 class="script-title">For My Teachers</h1>
+      <p class="loader-sub">Blossoming something special for you<span class="ellipsis"><span>.</span><span>.</span><span>.</span></span></p>
+      <div class="progress" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
+      <p class="progress-pct" id="progressPct">0%</p>
+      <button id="openBtn" class="btn-gold hidden" type="button">💌 &nbsp;Open Your Letter</button>
+      <p class="credit">♪ “Teacher” — TOMONARI SORA</p>
+    </div>
+  </div>
+
+  <!-- ═══════════ ENVELOPE SCENE UI ═══════════ -->
+  <div id="sceneUi" class="overlay ui-layer hidden">
+    <div class="top-bar">
+      <button id="muteBtn" class="icon-btn" type="button" title="Mute / unmute the song" aria-label="Mute or unmute the song">🔊</button>
+    </div>
+    <p id="hint" class="hint">✨ click the envelope to open your letter ✨</p>
+    <p class="credit bottom">♪ “Teacher” — TOMONARI SORA &nbsp;·&nbsp; theme from <em>Assassination Classroom: The Movie</em></p>
+  </div>
+
+  <!-- ═══════════ LETTER OVERLAY (the message) ═══════════ -->
+  <div id="letterOverlay" class="overlay letter-overlay hidden" role="dialog" aria-label="A letter to my teachers">
+    <article class="letter-paper">
+      <div class="letter-scroll">
+        <p class="letter-greeting" id="greetingSlot">Dear Teachers,</p>
+        <h2 class="letter-heading script-title">Happy Teacher's Day 🌸</h2>
+
+        <p>Some lessons are taught in classrooms. Yours are the ones that stayed — in how I think, how I write, how I see the world.</p>
+
+        <p><strong>Thank you for always being there.</strong> Not just behind the desk, but beside me — on the days I understood everything, and on the days I understood nothing at all.</p>
+
+        <p><strong>Thank you for trusting me.</strong> For handing me responsibilities a little heavier than I thought I could carry, and then watching, patiently, as I discovered that I could.</p>
+
+        <p>You were never only a teacher of subjects. You were the one I could talk to — about equations and chapters, yes, but also about doubt, about fear, about life. You made it safe to be a work in progress.</p>
+
+        <p><strong>And thank you for constantly inspiring me.</strong> Every time I felt like stopping, I remembered something you said — and kept going.</p>
+
+        <p>Here is the part you should be proudest of: <em>the wish you are reading right now</em> — a 3D world, an envelope that opens, a song that plays, code that I wrote myself — exists <em>because of you</em>. You taught me to write. To think. To analyze. To build. The fact that I can send my gratitude to you through a website of my own making is your lesson, still living in me.</p>
+
+        <p>If a student you taught can do this, imagine how far your teaching will travel with everyone else you believed in.</p>
+
+        <p class="letter-signoff script-title">With love and endless gratitude,</p>
+        <p class="letter-signature script-title">— Shuvam</p>
+
+        <p class="letter-ps"><em>P.S. — this entire website was written, animated and deployed by your student. Every petal is code. Every line is a thank-you.</em></p>
+
+        <div class="geo-card" id="geoCard">
+          <span class="geo-emoji" id="geoEmoji">🌍</span>
+          <span id="geoLine">This wish is traveling through the internet to find you…</span>
+        </div>
+
+        <div class="letter-actions">
+          <button id="replayBtn" class="btn-gold small" type="button">🌸 &nbsp;Fold it back &amp; open again</button>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <noscript>
+    <div class="overlay noscript-card">
+      <div class="loader-inner">
+        <h1 class="script-title">For My Teachers</h1>
+        <p>Happy Teacher's Day! This 3D experience needs JavaScript — but the wish itself needs nothing: thank you for everything, always. 🌸</p>
+      </div>
+    </div>
+  </noscript>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "./js/three.module.min.js"
+    }
+  }
+  </script>
+  <script type="module" src="js/main.js"></script></body>
+</html>

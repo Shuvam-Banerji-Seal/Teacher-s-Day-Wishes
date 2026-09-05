@@ -1,0 +1,8 @@
+# Downloads / large artifacts — not part of the deployed site
+downloads/
+.playwright-mcp/
+docs/
+plans/
+__pycache__/
+*.pyc
+.rigor-trash/
