@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#101426">
   <title>Teacher's Day Wishes 💌 — A Letter for My Teachers</title>
   <meta name="description" content="An animated 3D letter of gratitude for my teachers — flowers, petals, a song, and a letter that unfolds. Open the envelope.">
   <meta property="og:title" content="Teacher's Day Wishes — A Letter for My Teachers">
@@ -31,12 +32,15 @@
     </div>
   </div>
 
+  <!-- ═══════════ GLOBAL AUDIO CONTROL (above all overlays) ═══════════ -->
+  <div class="top-bar global-top-bar hidden" id="globalTopBar">
+    <button id="muteBtn" class="icon-btn" type="button" title="Mute / unmute the song" aria-label="Mute or unmute the song">🔊</button>
+  </div>
+
   <!-- ═══════════ ENVELOPE SCENE UI ═══════════ -->
   <div id="sceneUi" class="overlay ui-layer hidden">
-    <div class="top-bar">
-      <button id="muteBtn" class="icon-btn" type="button" title="Mute / unmute the song" aria-label="Mute or unmute the song">🔊</button>
-    </div>
     <p id="hint" class="hint">✨ click the envelope to open your letter ✨</p>
+    <button id="kbOpenBtn" class="kb-open hidden" type="button">(or press Enter to open)</button>
     <p class="credit bottom">♪ “Teacher” — TOMONARI SORA &nbsp;·&nbsp; theme from <em>Assassination Classroom: The Movie</em></p>
   </div>
 

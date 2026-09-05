@@ -95,6 +95,8 @@ els.openBtn.addEventListener('click', () => {
   state.audio.play().catch(() => {});
   els.loader.classList.add('hidden');
   els.sceneUi.classList.remove('hidden');
+  const gtb = $('#globalTopBar');
+  gtb.classList.remove('hidden');
   envelopeScene.enter();
 });
 
@@ -113,7 +115,22 @@ els.replayBtn.addEventListener('click', () => {
   els.letterOverlay.classList.add('hidden');
   state.envelopeOpened = envelopeScene.reset();
   els.hint.classList.remove('gone');
+  kbOpenBtn.classList.remove('gone');
 });
+
+/* keyboard access: Enter/Space or the small button opens the envelope */
+const kbOpenBtn = $('#kbOpenBtn');
+kbOpenBtn.addEventListener('click', () => envelopeScene.openViaKeyboard());
+window.addEventListener('keydown', (e) => {
+  if (!state.entered || state.envelopeOpened) return;
+  if (e.key === 'Enter' || e.key === ' ') {
+    // if focus is on a real control, let it handle the key
+    const ae = document.activeElement;
+    if (ae && (ae.id === 'muteBtn' || ae.id === 'kbOpenBtn')) return;
+    envelopeScene.openViaKeyboard();
+  }
+});
+envelopeScene.onOpen(() => kbOpenBtn.classList.add('gone'));
 
 /* mute toggle */
 els.muteBtn.addEventListener('click', () => {

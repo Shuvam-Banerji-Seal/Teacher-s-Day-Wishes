@@ -165,6 +165,24 @@ export function buildEnvelopeScene(stage) {
     map: topTex, roughness: 0.9, side: THREE.DoubleSide,
   });
 
+  // redraw the top texture too once fonts load
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(() => {
+      topCtx.clearRect(0, 0, 512, 256);
+      topCtx.fillStyle = '#fdf6e9';
+      topCtx.fillRect(0, 0, 512, 256);
+      topCtx.fillStyle = '#a94e63';
+      topCtx.font = 'italic 40px "Cormorant Garamond", Georgia, serif';
+      topCtx.textAlign = 'center';
+      topCtx.fillText('Happy', 256, 90);
+      topCtx.fillText("Teacher's Day", 256, 140);
+      topCtx.fillStyle = '#d4a24c';
+      topCtx.font = '30px serif';
+      topCtx.fillText('🌸', 256, 200);
+      topTex.needsUpdate = true;
+    });
+  }
+
   // bottom half (fixed)
   const letterBase = new THREE.Mesh(new THREE.PlaneGeometry(LW, LH / 2), letterMat);
   letterBase.position.y = -LH / 4;
@@ -207,6 +225,34 @@ export function buildEnvelopeScene(stage) {
   );
   letterFront.position.set(0, -LH / 4, 0.004);
   letter.add(letterFront);
+
+  // redraw canvas textures once webfonts are ready (avoid fallback serif)
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(() => {
+      ctx.font = 'italic 44px "Cormorant Garamond", Georgia, serif';
+      ctx.fillStyle = '#a94e63';
+      ctx.textAlign = 'center';
+      ctx.clearRect(0, 0, 512, 256);
+      ctx.fillStyle = '#fdf6e9';
+      ctx.fillRect(0, 0, 512, 256);
+      ctx.strokeStyle = 'rgba(185,141,95,.35)';
+      ctx.lineWidth = 2;
+      for (let i = 0; i < 4; i++) {
+        ctx.beginPath();
+        ctx.moveTo(80, 176 + i * 18);
+        ctx.lineTo(432, 176 + i * 18);
+        ctx.stroke();
+      }
+      ctx.fillStyle = '#a94e63';
+      ctx.font = 'italic 44px "Cormorant Garamond", Georgia, serif';
+      ctx.fillText('Dear Teachers,', 256, 96);
+      ctx.fillStyle = '#7a5c44';
+      ctx.font = 'italic 30px "Cormorant Garamond", Georgia, serif';
+      ctx.fillText('with love…', 256, 150);
+      letterTex.needsUpdate = true;
+      topTex.needsUpdate = true;
+    });
+  }
 
   letter.scale.set(0.98, 0.98, 1);
   letterTop.rotation.x = -Math.PI; // start folded down (fits inside envelope)
@@ -255,7 +301,8 @@ export function buildEnvelopeScene(stage) {
   let openT = 0;
   let hovering = false;
   let interactive = false;      // true only while envelope scene is active
-  let onOpenCallback = null;
+  const onOpenCallbacks = [];
+  function fireOpen() { for (const cb of onOpenCallbacks) cb(); }
 
   function isUiEvent(e) {
     // ignore pointer events that originate from buttons/overlays
@@ -277,7 +324,7 @@ export function buildEnvelopeScene(stage) {
     const hits = raycaster.intersectObjects([envelope], true);
     if (hits.length > 0) {
       opened = true;
-      onOpenCallback?.();
+      fireOpen();
     }
   }
 
@@ -398,6 +445,12 @@ export function buildEnvelopeScene(stage) {
       interactive = true;
       stage.activate('envelope');
     },
+    /** Programmatically trigger the open sequence (keyboard access). */
+    openViaKeyboard() {
+      if (!interactive || opened) return;
+      opened = true;
+      fireOpen();
+    },
     reset() {
       opened = false;
       openT = 0;
@@ -419,6 +472,6 @@ export function buildEnvelopeScene(stage) {
       camera.lookAt(0, 0, 0);
       return false; // envelopeOpened state
     },
-    onOpen(cb) { onOpenCallback = cb; },
+    onOpen(cb) { onOpenCallbacks.push(cb); },
   };
 }

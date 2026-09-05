@@ -31,14 +31,28 @@ export class AudioBus {
   }
 
   async play() {
+    // gentle fade-in from silence over ~2.5s
+    this.audio.volume = 0;
     try {
       await this.audio.play();
     } catch (err) {
-      // Autoplay blocked or play interrupted — retry once after 100ms
       return new Promise((resolve) => {
         setTimeout(() => this.audio.play().then(resolve).catch(resolve), 100);
       });
     }
+    this.fadeTo(0.85, 2500);
+  }
+
+  fadeTo(target, ms) {
+    const a = this.audio;
+    const start = a.volume;
+    const t0 = performance.now();
+    const step = () => {
+      const p = Math.min((performance.now() - t0) / ms, 1);
+      a.volume = start + (target - start) * p;
+      if (p < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
   }
 
   toggleMute() {

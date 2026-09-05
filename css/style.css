@@ -88,6 +88,7 @@ button.hidden { display: none; }
 
 /* ── scene UI ─────────────────────────────────────────── */
 .top-bar { position: absolute; top: 1rem; right: 1rem; }
+.global-top-bar { position: fixed; top: 1rem; right: 1rem; z-index: 30; }
 .icon-btn {
   font-size: 1.3rem; width: 3rem; height: 3rem;
   border-radius: 50%; border: 1px solid rgba(232,201,138,.4);
@@ -106,6 +107,15 @@ button.hidden { display: none; }
 }
 @keyframes hintFloat { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(-6px); } }
 .hint.gone { opacity: 0; }
+.kb-open {
+  position: absolute; bottom: 2.6rem; left: 50%; transform: translateX(-50%);
+  background: none; border: none; color: rgba(255,248,236,.45);
+  font-family: 'Cormorant Garamond', serif; font-size: .85rem; font-style: italic;
+  cursor: pointer; letter-spacing: .05em;
+  transition: opacity .8s ease;
+}
+.kb-open:focus-visible { outline: 1px dashed var(--gold-soft); outline-offset: 4px; color: var(--gold-soft); }
+.kb-open.gone { opacity: 0; pointer-events: none; }
 .credit.bottom { bottom: 1.2rem; }
 #sceneUi .credit.bottom { z-index: 1; }
 
